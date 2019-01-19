@@ -28,6 +28,18 @@ const (
 	Emergency = 600
 )
 
+// LevelList incrementally lists severities
+var LevelList []Level = []Level{
+	Debug,
+	Info,
+	Notice,
+	Warning,
+	Error,
+	Critical,
+	Alert,
+	Emergency,
+}
+
 // LevelNames maps a Level to a string
 var levelNames = map[Level]string{
 	Debug:     "DEBUG",
