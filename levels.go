@@ -29,7 +29,7 @@ const (
 )
 
 // LevelList incrementally lists severities
-var LevelList []Level = []Level{
+var LevelList = []Level{
 	Debug,
 	Info,
 	Notice,
