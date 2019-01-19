@@ -1,7 +1,6 @@
 package glo
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -18,7 +17,6 @@ func TestLevelSnap(t *testing.T) {
 func TestLevelString(t *testing.T) {
 	for lvl, exp := range levelNames {
 		got := lvl.String()
-		fmt.Printf("%d %s %s\n", lvl, exp, got)
 		if got != exp {
 			t.Errorf("invalid toString format for Level %d, expected(%s) got(%s)", lvl, exp, got)
 		}
