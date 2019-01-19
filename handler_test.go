@@ -13,7 +13,7 @@ func TestHandler(t *testing.T) {
 	hndl := NewHandler(bfr, formatter)
 	hndl.Log(Info, "test")
 
-	if rs, _ := bfr.ReadString('\n'); rs != expect {
+	if rs := bfr.String(); rs != expect {
 		t.Errorf("bufio did not receive the log. expected(%#v) got(%#v)", expect, rs)
 	}
 }
