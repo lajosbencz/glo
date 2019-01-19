@@ -7,7 +7,7 @@ import (
 
 func TestLogger(t *testing.T) {
 	formatter := NewFormatter(DefaultFormat)
-	expect := formatter.Format(Info, "test")
+	expect := formatter.Format(Info, "test") + "\n"
 	bfr := bytes.NewBufferString("")
 
 	log := NewLogger()
