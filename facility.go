@@ -1,5 +1,6 @@
 package glo
 
+// Facility is the main entry when used
 type Facility interface {
 	Logger
 	LoggerDebug
@@ -14,6 +15,7 @@ type Facility interface {
 	PushHandler(Handler) Facility
 }
 
+// NewFacility creates a logger facility, this is the main entry
 func NewFacility() Facility {
 	return &facility{
 		[]Handler{},
@@ -24,11 +26,13 @@ type facility struct {
 	handlers []Handler
 }
 
+// ClearHandlers removes all registered handlers
 func (f *facility) ClearHandlers() Facility {
 	f.handlers = []Handler{}
 	return f
 }
 
+// PushHandlers adds a new handler
 func (f *facility) PushHandler(h Handler) Facility {
 	f.handlers = append(f.handlers, h)
 	return f
