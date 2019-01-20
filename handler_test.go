@@ -11,9 +11,19 @@ func TestHandler(t *testing.T) {
 	bfr := bytes.NewBufferString("")
 
 	hndl := NewHandler(bfr).SetFormatter(formatter)
-	hndl.Log(Info, "x")
 
+	// Test write
+	hndl.Log(Info, "x")
 	if rs := bfr.String(); rs != expect {
 		t.Errorf("bufio did not receive the log. expected(%#v) got(%#v)", expect, rs)
 	}
+
+	// Test SetLevel
+	bfr.Truncate(0)
+	hndl.SetLevel(Emergency)
+	hndl.Log(Debug, "x")
+	if rs := bfr.String(); rs != "" {
+		t.Error("severity was not ignored")
+	}
+
 }
