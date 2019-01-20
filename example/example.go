@@ -18,9 +18,9 @@ func main() {
 	taskRemain := 2
 	waitChn := make(chan bool, taskRemain)
 
-	log := glo.NewLogger()
-	log.AddHandler(glo.NewHandler(os.Stdout, glo.NewFormatter(glo.DefaultFormat)))
-	log.AddHandler(glo.NewHandler(os.Stdout, glo.NewFormatter("[%[1]s] %[2]s %[3]v")))
+	log := glo.NewFacility()
+	log.PushHandler(glo.NewHandler(os.Stdout))
+	log.PushHandler(glo.NewHandler(os.Stdout).SetFormatter(glo.NewFormatter("[%[1]s] %[2]s %[3]v")))
 
 	go func() {
 		for i := 0; i < loopCount; i++ {
