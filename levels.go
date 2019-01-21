@@ -13,19 +13,19 @@ const (
 	// Debug severity
 	Debug Level = 100
 	// Info severity
-	Info = 200
+	Info Level = 200
 	// Notice severity
-	Notice = 250
+	Notice Level = 250
 	// Warning severity
-	Warning = 300
+	Warning Level = 300
 	// Error severity
-	Error = 400
+	Error Level = 400
 	// Critical severity
-	Critical = 500
+	Critical Level = 500
 	// Alert severity
-	Alert = 550
+	Alert Level = 550
 	// Emergency severity
-	Emergency = 600
+	Emergency Level = 600
 )
 
 // LevelList incrementally lists severities
