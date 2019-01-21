@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/lajosbencz/glo"
@@ -15,12 +16,13 @@ const (
 )
 
 func main() {
-	taskRemain := 2
-	waitChn := make(chan bool, taskRemain)
 
 	log := glo.NewFacility()
 	log.PushHandler(glo.NewHandler(os.Stdout))
 	log.PushHandler(glo.NewHandler(os.Stdout).SetFormatter(glo.NewFormatter("[%[1]s] %[2]s %[3]v")))
+
+	var waitGrp sync.WaitGroup
+	waitGrp.Add(2)
 
 	go func() {
 		for i := 0; i < loopCount; i++ {
@@ -28,7 +30,7 @@ func main() {
 			log.Log(glo.Debug, "Hello Log!", map[string]string{"x": "foo2", "y": "bar"})
 			log.Log(glo.Debug, "Detailed info to debug")
 		}
-		waitChn <- true
+		waitGrp.Done()
 	}()
 
 	go func() {
@@ -36,16 +38,8 @@ func main() {
 			time.Sleep(time.Millisecond * time.Duration(rand.Intn(sleepMax-sleepMin)+sleepMin))
 			log.Log(glo.Info, "Stream this!")
 		}
-		waitChn <- true
+		waitGrp.Done()
 	}()
 
-	for {
-		select {
-		case <-waitChn:
-			taskRemain--
-		}
-		if taskRemain < 1 {
-			break
-		}
-	}
+	waitGrp.Wait()
 }
