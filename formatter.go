@@ -1,15 +1,18 @@
 package glo
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 const (
 	// DefaultFormat is used by default
-	DefaultFormat string = "[%[1]s] %[2]s %[3]v"
+	DefaultFormat string = "%[1]s [%[2]s] %[3]s %[4]v"
 )
 
 // Formatter formats a log event
 type Formatter interface {
-	Format(Level, string, ...interface{}) string
+	Format(time.Time, Level, string, ...interface{}) string
 }
 
 // NewFormatter creates a Formatter from a string
@@ -21,6 +24,6 @@ type formatter struct {
 	format string
 }
 
-func (f *formatter) Format(level Level, line string, params ...interface{}) string {
-	return fmt.Sprintf(f.format, level, line, params)
+func (f *formatter) Format(time time.Time, level Level, line string, params ...interface{}) string {
+	return fmt.Sprintf(f.format, time, level, line, params)
 }

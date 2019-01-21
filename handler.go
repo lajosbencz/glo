@@ -2,6 +2,7 @@ package glo
 
 import (
 	"io"
+	"time"
 )
 
 // Handler logs to stdout
@@ -31,7 +32,7 @@ func (h *handler) Log(level Level, line string, params ...interface{}) error {
 	if level < h.level {
 		return nil
 	}
-	l := h.formatter.Format(level, line, params...) + "\n"
+	l := h.formatter.Format(time.Now(), level, line, params...) + "\n"
 	_, err := h.writer.Write([]byte(l))
 	return err
 }

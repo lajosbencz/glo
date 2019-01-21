@@ -19,7 +19,7 @@ func main() {
 
 	log := glo.NewFacility()
 	log.PushHandler(glo.NewHandler(os.Stdout))
-	log.PushHandler(glo.NewHandler(os.Stdout).SetFormatter(glo.NewFormatter("[%[1]s] %[2]s %[3]v")))
+	log.PushHandler(glo.NewHandler(os.Stdout).SetFormatter(glo.NewFormatter("%[1]s [%[2]s] %[3]s %[4]v")))
 
 	var waitGrp sync.WaitGroup
 	waitGrp.Add(2)
