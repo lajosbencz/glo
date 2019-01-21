@@ -13,13 +13,13 @@ func TestHandler(t *testing.T) {
 
 	hndl := NewHandler(bfr).SetFormatter(formatter)
 
-	// Test write
+	// Simple write
 	hndl.Log(Info, "x")
 	if rs := bfr.String(); rs != expect {
-		t.Errorf("bufio did not receive the log. expected(%#v) got(%#v)", expect, rs)
+		t.Error("log was not written")
 	}
 
-	// Test SetLevel
+	// Validate Level
 	bfr.Truncate(0)
 	hndl.PushValidator(NewValidatorLevel(Emergency))
 	hndl.Log(Debug, "x")
@@ -37,4 +37,11 @@ func TestHandler(t *testing.T) {
 		t.Error("severity was ignored")
 	}
 
+	// Clear validators
+	bfr.Truncate(0)
+	hndl.ClearValidators()
+	hndl.Log(Debug, "x")
+	if rs := bfr.String(); rs != "[DEBUG] x []\n" {
+		t.Error("validators were not cleared")
+	}
 }
