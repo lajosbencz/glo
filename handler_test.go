@@ -3,11 +3,12 @@ package glo
 import (
 	"bytes"
 	"testing"
+	"time"
 )
 
 func TestHandler(t *testing.T) {
-	formatter := NewFormatter(DefaultFormat)
-	expect := formatter.Format(Info, "x") + "\n"
+	formatter := NewFormatter(testFormat)
+	expect := formatter.Format(time.Now(), Info, "x") + "\n"
 	bfr := bytes.NewBufferString("")
 
 	hndl := NewHandler(bfr).SetFormatter(formatter)
