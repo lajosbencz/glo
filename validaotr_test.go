@@ -13,7 +13,7 @@ func TestValidatorLevel(t *testing.T) {
 }
 
 func TestValidatorLevelRange(t *testing.T) {
-	v := NewValidatorLevelRange(Info, Warning)
+	v := NewValidatorLevelRange(Warning, Info)
 	if v.Validate(Debug, "") {
 		t.Errorf("%s should be invalid", Debug)
 	}
