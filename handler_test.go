@@ -21,10 +21,20 @@ func TestHandler(t *testing.T) {
 
 	// Test SetLevel
 	bfr.Truncate(0)
-	hndl.SetLevel(Emergency)
+	hndl.PushValidator(NewValidatorLevel(Emergency))
 	hndl.Log(Debug, "x")
+	hndl.Log(Info, "x")
+	hndl.Log(Notice, "x")
+	hndl.Log(Warning, "x")
+	hndl.Log(Error, "x")
+	hndl.Log(Critical, "x")
+	hndl.Log(Alert, "x")
 	if rs := bfr.String(); rs != "" {
 		t.Error("severity was not ignored")
+	}
+	hndl.Log(Emergency, "x")
+	if rs := bfr.String(); rs != "[EMERGENCY] x []\n" {
+		t.Error("severity was ignored")
 	}
 
 }

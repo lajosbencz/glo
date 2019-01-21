@@ -25,5 +25,5 @@ type formatter struct {
 }
 
 func (f *formatter) Format(time time.Time, level Level, line string, params ...interface{}) string {
-	return fmt.Sprintf(f.format, time, level, line, params)
+	return fmt.Sprintf(f.format, time.Format("2006-01-02T15:04:05Z07:00"), level, line, params)
 }

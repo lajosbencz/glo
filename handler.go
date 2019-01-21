@@ -9,7 +9,8 @@ import (
 type Handler interface {
 	Logger
 	SetFormatter(Formatter) Handler
-	SetLevel(Level) Handler
+	ClearValidators() Handler
+	PushValidator(Validator) Handler
 }
 
 // NewHandler creates handler that prints to an io.Writer
@@ -17,19 +18,26 @@ func NewHandler(writer io.Writer) Handler {
 	return &handler{
 		writer,
 		NewFormatter(DefaultFormat),
-		Debug,
+		[]Validator{},
 	}
 }
 
 type handler struct {
-	writer    io.Writer
-	formatter Formatter
-	level     Level
+	writer     io.Writer
+	formatter  Formatter
+	validators []Validator
 }
 
 // Log logs a line with a specific level
 func (h *handler) Log(level Level, line string, params ...interface{}) error {
-	if level < h.level {
+	valid := true
+	for _, v := range h.validators {
+		if !v.Validate(level, line, params) {
+			valid = false
+			break
+		}
+	}
+	if !valid {
 		return nil
 	}
 	l := h.formatter.Format(time.Now(), level, line, params...) + "\n"
@@ -42,7 +50,12 @@ func (h *handler) SetFormatter(formatter Formatter) Handler {
 	return h
 }
 
-func (h *handler) SetLevel(level Level) Handler {
-	h.level = level
+func (h *handler) ClearValidators() Handler {
+	h.validators = []Validator{}
+	return h
+}
+
+func (h *handler) PushValidator(validator Validator) Handler {
+	h.validators = append(h.validators, validator)
 	return h
 }
