@@ -15,8 +15,8 @@ func main() {
 	log := glo.NewFacility()
 	log.PushHandler(handler)
 
-	log.Debug("", "line param is empty, should be ignored")
-	log.Debug("this should appear at the output")
+	log.Debug("", "format is empty, should be ignored")
+	log.Debug("only this should appear at the output")
 }
 
 type filterRgx struct {

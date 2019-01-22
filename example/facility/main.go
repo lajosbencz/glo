@@ -19,7 +19,7 @@ func main() {
 
 	// write only errors and above using a short format
 	handlerStd := glo.NewHandler(os.Stdout)
-	formatter := glo.NewFormatter("%[2]s: %[3]s %[4]#")
+	formatter := glo.NewFormatter("{L}: {M}")
 	filter := glo.NewFilterLevel(glo.Error)
 	handlerStd.SetFormatter(formatter)
 	handlerStd.PushFilter(filter)

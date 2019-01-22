@@ -10,7 +10,7 @@ import (
 )
 
 func TestFacility(t *testing.T) {
-	formatter := NewFormatter(testFormat)
+	formatter := NewFormatter("[{L}] {M}")
 	expect := formatter.Format(time.Now(), Info, "x") + "\n"
 	bfr := bytes.NewBufferString("")
 	bfr2 := bytes.NewBufferString("")
@@ -38,7 +38,7 @@ func TestFacility(t *testing.T) {
 	log.Critical("x")
 	log.Alert("x")
 	log.Emergency("x")
-	if rs := bfr.String(); rs != "[DEBUG] x []\n[INFO] x []\n[NOTICE] x []\n[WARNING] x []\n[ERROR] x []\n[CRITICAL] x []\n[ALERT] x []\n[EMERGENCY] x []\n" {
+	if rs := bfr.String(); rs != "[DEBUG] x\n[INFO] x\n[NOTICE] x\n[WARNING] x\n[ERROR] x\n[CRITICAL] x\n[ALERT] x\n[EMERGENCY] x\n" {
 		t.Errorf("bufio has wrong value. got(%#v)", rs)
 	}
 
@@ -62,8 +62,8 @@ func TestFacility(t *testing.T) {
 func TestStdFacility(t *testing.T) {
 	o, e := captureStdout(useStdFacility)
 
-	rgxo := regexp.MustCompile(`\[INFO\] x \[\]\n$`)
-	rgxe := regexp.MustCompile(`\[ERROR\] x \[\]\n$`)
+	rgxo := regexp.MustCompile(`\[INFO\] x\n$`)
+	rgxe := regexp.MustCompile(`\[ERROR\] x\n$`)
 	if !rgxo.MatchString(o) {
 		t.Error("info was not written to stdout")
 	}

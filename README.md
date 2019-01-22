@@ -40,7 +40,7 @@ func main() {
 	log := glo.NewStdFacility()
 
 	// goes to os.Stdout
-	log.Debug("Detailed debug line", map[string]string{"x": "foo", "y": "bar"})
+	log.Debug("Detailed debug line: %#v", map[string]string{"x": "foo", "y": "bar"})
 
 	// goes to os.Stderr
 	log.Error("Oooof!")
@@ -78,7 +78,7 @@ func main() {
 
 	// write only errors and above using a short format
 	handlerStd := glo.NewHandler(os.Stdout)
-	formatter := glo.NewFormatter("%[2]s: %[3]s %[4]#")
+	formatter := glo.NewFormatter("{L}: {M}")
 	filter := glo.NewFilterLevel(glo.Error)
 	handlerStd.SetFormatter(formatter)
 	handlerStd.PushFilter(filter)
@@ -102,6 +102,7 @@ Output:
 Log output:
 ======================================================================
 ALERT: Written to both buffer and stdout []
+
 Buffer contents:
 ======================================================================
 2019-01-22T15:14:16+01:00 [INFO] Only written to the buffer []
@@ -128,8 +129,8 @@ func main() {
 	log := glo.NewFacility()
 	log.PushHandler(handler)
 
-	log.Debug("", "line param is empty, should be ignored")
-	log.Debug("this should appear at the output")
+	log.Debug("", "format is empty, should be ignored")
+	log.Debug("only this should appear at the output")
 }
 
 type filterRgx struct {
@@ -144,5 +145,5 @@ func (f *filterRgx) Check(level glo.Level, line string, params ...interface{}) b
 Output:
 
 ```
-2019-01-22T15:30:23+01:00 [DEBUG] this should appear at the output []
+2019-01-22T15:30:23+01:00 [DEBUG] only this should appear at the output
 ```

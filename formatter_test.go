@@ -1,16 +1,17 @@
 package glo
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
 
-const testFormat = "[%[2]s] %[3]s %[4]#"
-
 func TestFormatter(t *testing.T) {
-	formatter := NewFormatter(testFormat)
-	line := formatter.Format(time.Now(), Info, "x")
-	if line != "[INFO] x []" {
+	formatter := NewFormatter(DefaultFormat)
+	now := time.Now()
+	timestamp := now.Format(dateFormat)
+	line := formatter.Format(now, Info, "%-10s %-10d", "pad me", 123)
+	if line != fmt.Sprintf("%s [INFO] pad me     123       ", timestamp) {
 		t.Error("failed to format correctly")
 	}
 }

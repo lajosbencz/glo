@@ -7,7 +7,7 @@ import (
 )
 
 func TestHandler(t *testing.T) {
-	formatter := NewFormatter(testFormat)
+	formatter := NewFormatter("[{L}] {M}")
 	expect := formatter.Format(time.Now(), Info, "x") + "\n"
 	bfr := bytes.NewBufferString("")
 
@@ -33,7 +33,7 @@ func TestHandler(t *testing.T) {
 		t.Error("severity was not ignored")
 	}
 	hndl.Log(Emergency, "x")
-	if rs := bfr.String(); rs != "[EMERGENCY] x []\n" {
+	if rs := bfr.String(); rs != "[EMERGENCY] x\n" {
 		t.Error("severity was ignored")
 	}
 
@@ -41,7 +41,7 @@ func TestHandler(t *testing.T) {
 	bfr.Truncate(0)
 	hndl.ClearFilters()
 	hndl.Log(Debug, "x")
-	if rs := bfr.String(); rs != "[DEBUG] x []\n" {
+	if rs := bfr.String(); rs != "[DEBUG] x\n" {
 		t.Error("validators were not cleared")
 	}
 }

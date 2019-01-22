@@ -8,7 +8,7 @@ func main() {
 	log := glo.NewStdFacility()
 
 	// goes to os.Stdout
-	log.Debug("Detailed debug line", map[string]string{"x": "foo", "y": "bar"})
+	log.Debug("Detailed debug line: %#v", map[string]string{"x": "foo", "y": "bar"})
 
 	// goes to os.Stderr
 	log.Error("Oooof!")

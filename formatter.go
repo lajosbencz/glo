@@ -2,12 +2,15 @@ package glo
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
 const (
 	// DefaultFormat is used by default
-	DefaultFormat string = "%[1]s [%[2]s] %[3]s %[4]v"
+	DefaultFormat string = "{T} [{L}] {M}"
+
+	dateFormat string = "2006-01-02T15:04:05Z07:00"
 )
 
 // Formatter formats a log event
@@ -25,5 +28,11 @@ type formatter struct {
 }
 
 func (f *formatter) Format(time time.Time, level Level, line string, params ...interface{}) string {
-	return fmt.Sprintf(f.format, time.Format("2006-01-02T15:04:05Z07:00"), level, line, params)
+	m := fmt.Sprintf(line, params...)
+	r := strings.NewReplacer(
+		"{T}", time.Format(dateFormat),
+		"{L}", level.String(),
+		"{M}", m,
+	)
+	return r.Replace(f.format)
 }
