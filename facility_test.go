@@ -49,7 +49,7 @@ func TestFacility(t *testing.T) {
 
 	// Test first handler error
 	log.PushHandler(&mockHandler{
-		handler{bfr, formatter, []Validator{}},
+		handler{bfr, formatter, []Filter{}},
 	})
 	if err := log.Log(Debug, "x"); err != mockErrHandler {
 		t.Error("expecting error")

@@ -9,8 +9,8 @@ import (
 type Handler interface {
 	Logger
 	SetFormatter(Formatter) Handler
-	ClearValidators() Handler
-	PushValidator(Validator) Handler
+	ClearFilters() Handler
+	PushFilter(Filter) Handler
 }
 
 // NewHandler creates handler that prints to an io.Writer
@@ -18,21 +18,21 @@ func NewHandler(writer io.Writer) Handler {
 	return &handler{
 		writer,
 		NewFormatter(DefaultFormat),
-		[]Validator{},
+		[]Filter{},
 	}
 }
 
 type handler struct {
-	writer     io.Writer
-	formatter  Formatter
-	validators []Validator
+	writer    io.Writer
+	formatter Formatter
+	filters   []Filter
 }
 
 // Log logs a line with a specific level
 func (h *handler) Log(level Level, line string, params ...interface{}) error {
 	valid := true
-	for _, v := range h.validators {
-		if !v.Validate(level, line, params) {
+	for _, f := range h.filters {
+		if !f.Check(level, line, params) {
 			valid = false
 			break
 		}
@@ -50,12 +50,12 @@ func (h *handler) SetFormatter(formatter Formatter) Handler {
 	return h
 }
 
-func (h *handler) ClearValidators() Handler {
-	h.validators = []Validator{}
+func (h *handler) ClearFilters() Handler {
+	h.filters = []Filter{}
 	return h
 }
 
-func (h *handler) PushValidator(validator Validator) Handler {
-	h.validators = append(h.validators, validator)
+func (h *handler) PushFilter(filter Filter) Handler {
+	h.filters = append(h.filters, filter)
 	return h
 }

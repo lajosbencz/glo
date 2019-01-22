@@ -21,7 +21,7 @@ func TestHandler(t *testing.T) {
 
 	// Validate Level
 	bfr.Truncate(0)
-	hndl.PushValidator(NewValidatorLevel(Emergency))
+	hndl.PushFilter(NewFilterLevel(Emergency))
 	hndl.Log(Debug, "x")
 	hndl.Log(Info, "x")
 	hndl.Log(Notice, "x")
@@ -39,7 +39,7 @@ func TestHandler(t *testing.T) {
 
 	// Clear validators
 	bfr.Truncate(0)
-	hndl.ClearValidators()
+	hndl.ClearFilters()
 	hndl.Log(Debug, "x")
 	if rs := bfr.String(); rs != "[DEBUG] x []\n" {
 		t.Error("validators were not cleared")
