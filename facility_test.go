@@ -2,6 +2,9 @@ package glo
 
 import (
 	"bytes"
+	"io"
+	"os"
+	"regexp"
 	"testing"
 	"time"
 )
@@ -56,6 +59,19 @@ func TestFacility(t *testing.T) {
 	}
 }
 
+func TestStdFacility(t *testing.T) {
+	o, e := captureStdout(useStdFacility)
+
+	rgxo := regexp.MustCompile(`\[INFO\] x \[\]\n$`)
+	rgxe := regexp.MustCompile(`\[ERROR\] x \[\]\n$`)
+	if !rgxo.MatchString(o) {
+		t.Error("info was not written to stdout")
+	}
+	if !rgxe.MatchString(e) {
+		t.Error("error was not written to stderr")
+	}
+}
+
 type mockHandler struct {
 	handler
 }
@@ -71,3 +87,32 @@ func (h mockHandlerError) Error() string {
 }
 
 var mockErrHandler mockHandlerError = "err"
+
+func captureStdout(f func()) (string, string) {
+	oldo := os.Stdout
+	ro, wo, _ := os.Pipe()
+	os.Stdout = wo
+	olde := os.Stderr
+	re, we, _ := os.Pipe()
+	os.Stderr = we
+
+	f()
+
+	wo.Close()
+	os.Stdout = oldo
+	var bufo bytes.Buffer
+	io.Copy(&bufo, ro)
+
+	we.Close()
+	os.Stderr = olde
+	var bufe bytes.Buffer
+	io.Copy(&bufe, re)
+
+	return bufo.String(), bufe.String()
+}
+
+func useStdFacility() {
+	log := NewStdFacility()
+	log.Info("x")
+	log.Error("x")
+}

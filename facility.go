@@ -1,5 +1,7 @@
 package glo
 
+import "os"
+
 // Facility is the main entry when used
 type Facility interface {
 	Logger
@@ -20,6 +22,16 @@ func NewFacility() Facility {
 	return &facility{
 		[]Handler{},
 	}
+}
+
+// NewStdFacility creates a logger with two handlers, pointing to os.Stdout and os.Stderr
+// anything below Error gets sent to Stdout, anything above Warning gets sent to Stderr
+func NewStdFacility() Facility {
+	f := NewFacility()
+	ho := NewHandler(os.Stdout).PushFilter(NewFilterLevelRange(Debug, Warning))
+	he := NewHandler(os.Stderr).PushFilter(NewFilterLevel(Error))
+	f.PushHandler(ho).PushHandler(he)
+	return f
 }
 
 type facility struct {
