@@ -19,7 +19,7 @@ func main() {
 
 	log := glo.NewFacility()
 	log.PushHandler(glo.NewHandler(os.Stdout))
-	hShortInfo := glo.NewHandler(os.Stdout).PushValidator(glo.NewValidatorLevel(glo.Info)).SetFormatter(glo.NewFormatter("%[2]s: %[3]s %[4]v"))
+	hShortInfo := glo.NewHandler(os.Stdout).PushFilter(glo.NewFilterLevel(glo.Info)).SetFormatter(glo.NewFormatter("%[2]s: %[3]s %[4]v"))
 	log.PushHandler(hShortInfo)
 
 	var waitGrp sync.WaitGroup
