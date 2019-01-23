@@ -10,13 +10,13 @@ Inspired by Monolog for PHP, severity levels are identical
 
 ### Install
 
-```
-# go get github.com/lajosbencz/glo
+```bash
+go get github.com/lajosbencz/glo
 ```
 
 ### Severity levels
 
-```
+```bash
 Debug     = 100
 Info      = 200
 Notice    = 250
@@ -49,7 +49,7 @@ func main() {
 
 Output:
 
-```
+```bash
 2019-01-22T15:16:08+01:00 [DEBUG] Detailed debug line [map[x:foo y:bar]]
 2019-01-22T15:16:08+01:00 [ERROR] Oooof! []
 ```
@@ -98,7 +98,7 @@ func main() {
 
 Output:
 
-```
+```bash
 Log output:
 ======================================================================
 ALERT: Written to both buffer and stdout []
@@ -144,6 +144,6 @@ func (f *filterRgx) Check(level glo.Level, line string, params ...interface{}) b
 
 Output:
 
-```
+```bash
 2019-01-22T15:30:23+01:00 [DEBUG] only this should appear at the output
 ```
